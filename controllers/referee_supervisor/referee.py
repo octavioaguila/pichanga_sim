@@ -1,4 +1,7 @@
-from consts import TEAM_B_GOAL_X_RANGE, TEAM_B_GOAL_Y_RANGE, POST_GOAL_WAIT_TIME
+from consts import (TEAM_B_GOAL_X_RANGE, TEAM_B_GOAL_Y_RANGE,
+                    POST_GOAL_WAIT_TIME, TEAM_A_GOAL_X_RANGE,
+                    TEAM_A_GOAL_Y_RANGE)
+
 
 class SoccerReferee:
 
@@ -15,6 +18,17 @@ class SoccerReferee:
             if TEAM_B_GOAL_Y_RANGE[0] > y_translation > TEAM_B_GOAL_Y_RANGE[1]:
                 self.team_a_score += 1
                 self.supervisor.draw_score(self.team_a_score, self.team_b_score)
+                self.supervisor.draw_goal_message(0.0)
                 self.reset_timer = POST_GOAL_WAIT_TIME
+                return
+        
+        if TEAM_A_GOAL_X_RANGE[0] < x_translation < TEAM_A_GOAL_X_RANGE[1]:
+            if TEAM_A_GOAL_Y_RANGE[0] < y_translation < TEAM_A_GOAL_Y_RANGE[1]:
+                self.team_b_score += 1
+                self.supervisor.draw_score(self.team_a_score, self.team_b_score)
+                self.supervisor.draw_goal_message(0.0)
+                self.reset_timer = POST_GOAL_WAIT_TIME
+                return
+
 
 

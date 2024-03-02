@@ -1,8 +1,6 @@
 from supervisor import SoccerSupervisor
 from referee import SoccerReferee
 from consts import TIMESTEP
-import numpy as np
-import cv2
 
 supervisor = SoccerSupervisor()
 referee = SoccerReferee(supervisor)
@@ -16,6 +14,8 @@ while supervisor.step(TIMESTEP) != -1:
     elif referee.reset_timer > 0:
         referee.reset_timer -= TIMESTEP / 1000.0
     else:
-        pass
+        supervisor.draw_goal_message(1.0)
+        supervisor.move_robots_to_start()
+        referee.reset_timer = 0
 
-    print(f"Timer: {referee.reset_timer}")
+    # print(f"Timer: {referee.reset_timer}")
