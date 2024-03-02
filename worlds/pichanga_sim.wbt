@@ -1,0 +1,436 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+
+WorldInfo {
+  info [
+    "A simple RCJ Soccer game simulated using Webots."
+  ]
+  title "RCJ Soccer Sim"
+  optimalThreadCount 8
+}
+Viewpoint {
+  orientation 0.062484007380927534 0.9976353263108257 0.0286269893337106 0.5341291618969711
+  position -3.3827531612678365 -0.22484284312936625 2.0795884243912557
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+DEF SOCCER_FIELD Solid {
+  children [
+    Solid {
+      translation 0 -1.175 0.05
+      rotation 0 0 1 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.466667 0.462745 0.482353
+            metalness 0
+          }
+          geometry DEF WALL_SHAPE Box {
+            size 0.05 1.2 0.1
+          }
+        }
+      ]
+      name "west_wall"
+      boundingObject USE WALL_SHAPE
+    }
+    Solid {
+      translation 0 1.175 0.05
+      rotation 0 0 1 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.466667 0.462745 0.482353
+            metalness 0
+          }
+          geometry DEF WALL_SHAPE Box {
+            size 0.05 1.2 0.1
+          }
+        }
+      ]
+      name "east_wall"
+      boundingObject USE WALL_SHAPE
+    }
+    Solid {
+      translation -0.575 0 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.466667 0.462745 0.482353
+            metalness 0
+          }
+          geometry DEF WALL_SHAPE Box {
+            size 0.05 2.3 0.1
+          }
+        }
+      ]
+      name "north_wall"
+      boundingObject USE WALL_SHAPE
+    }
+    Solid {
+      translation 0.575 0 0.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.466667 0.462745 0.482353
+            metalness 0
+          }
+          geometry DEF WALL_SHAPE Box {
+            size 0.05 2.3 0.1
+          }
+        }
+      ]
+      name "south_wall"
+      boundingObject USE WALL_SHAPE
+    }
+    DEF GROUND Pose {
+      rotation 0 0 1 1.5707996938995747
+      children [
+        DEF GROUND_SHAPE Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "textures/field2.png"
+              ]
+            }
+            metalness 0
+          }
+          geometry Plane {
+            size 2.3 1.1
+          }
+        }
+      ]
+    }
+    DEF PURPLE_GOAL Shape {
+      appearance PBRAppearance {
+        baseColor 0.466667 0.462745 0.482353
+        roughness 1
+        metalness 0
+      }
+      geometry IndexedFaceSet {
+        coord Coordinate {
+          point [
+            -0.21 -1.16 0
+            0.21 -1.16 0
+            0.21 -0.95 0
+            0.2 -0.95 0
+            0.2 -1.15 0
+            -0.2 -1.15 0
+            -0.2 -0.95 0
+            -0.21 -0.95 0
+            -0.21 -1.16 0
+            -0.21 -1.16 0.12
+            0.21 -1.16 0.12
+            0.21 -0.95 0.12
+            0.2 -0.95 0.12
+            0.2 -1.15 0.12
+            -0.2 -1.15 0.12
+            -0.2 -0.95 0.12
+            -0.21 -0.95 0.12
+            -0.21 -1.16 0.12
+          ]
+        }
+        coordIndex [
+          0, 1, 2, 3, 4, 5, 6, 7, 8, -1, 0, 1, 10, 9, -1, 1, 2, 11, 10, -1, 2, 3, 12, 11, -1, 3, 4, 13, 12, -1, 4, 5, 14, 13, -1, 5, 6, 15, 14, -1, 6, 7, 16, 15, -1, 7, 8, 17, 16, -1
+        ]
+      }
+    }
+    DEF BLUE_GOAL Shape {
+      appearance PBRAppearance {
+        baseColor 0.368627 0.360784 0.392157
+        roughness 1
+        metalness 0
+      }
+      geometry IndexedFaceSet {
+        coord Coordinate {
+          point [
+            -0.21 1.16 0
+            -0.21 0.95 0
+            -0.2 0.95 0
+            -0.2 1.15 0
+            0.2 1.15 0
+            0.2 0.95 0
+            0.21 0.95 0
+            0.21 1.16 0
+            -0.21 1.16 0
+            -0.21 1.16 0.12
+            -0.21 0.95 0.12
+            -0.2 1.15 0.12
+            -0.2 1.15 0.12
+            0.2 1.15 0.12
+            0.2 0.95 0.12
+            0.21 0.95 0.12
+            0.21 1.16 0.12
+            -0.21 1.16 0.12
+          ]
+        }
+        coordIndex [
+          0, 1, 2, 3, 4, 5, 6, 7, 8, -1, 0, 1, 10, 9, -1, 1, 2, 11, 10, -1, 2, 3, 12, 11, -1, 3, 4, 13, 12, -1, 4, 5, 14, 13, -1, 5, 6, 15, 14, -1, 6, 7, 16, 15, -1, 7, 8, 17, 16, -1
+        ]
+      }
+    }
+  ]
+  name "soccer field"
+  boundingObject Group {
+    children [
+      USE PURPLE_GOAL
+      USE BLUE_GOAL
+      USE GROUND
+    ]
+  }
+  locked TRUE
+}
+DEF BALL Robot {
+  translation 0 0 0.0208079
+  rotation 0.7071067811865474 0.7071067811865475 0 -2.62318
+  children [
+    DEF FOOTBALL_SHAPE Shape {
+      appearance PBRAppearance {
+        baseColor 0.964706 0.827451 0.176471
+        roughness 0.4
+        metalness 0
+      }
+      geometry Sphere {
+        radius 0.021
+        subdivision 3
+      }
+    }
+    Emitter {
+      name "ball emitter"
+      type "infra-red"
+      range 0.6
+      channel 4
+      baudRate 115200
+      allowedChannels [
+        4
+      ]
+    }
+  ]
+  name "soccer ball"
+  model "soccer ball"
+  boundingObject USE FOOTBALL_SHAPE
+  physics Physics {
+    density -1
+    mass 0.05
+  }
+  recognitionColors [
+    1 1 1
+    0 0 0
+  ]
+  controller "rcj_soccer_ball"
+  synchronization FALSE
+}
+DEF A1 Robot {
+  translation 0 0.9 0.045
+  rotation 1.0823634158639528e-06 1.0483773613787562e-06 -0.9999999999988647 1.6026953071807208
+  children [
+    BallJoint {
+      jointParameters BallJointParameters {
+        anchor 0.04 0 -0.041
+      }
+      jointParameters2 JointParameters {
+      }
+      jointParameters3 JointParameters {
+        axis 0 1 0
+      }
+      endPoint Solid {
+        translation 0.04 -3.04326e-06 -0.041
+        rotation -0.06015448008214271 0.0011614298827708625 0.9981884038630556 6.283185307179586
+        children [
+          DEF BALL_WHEEL Shape {
+            appearance PBRAppearance {
+              baseColor 0.239216 0.219608 0.27451
+              metalness 0
+            }
+            geometry Sphere {
+              radius 0.004
+            }
+          }
+        ]
+        name "solid(1)"
+        contactMaterial "wheel"
+        boundingObject USE BALL_WHEEL
+        physics Physics {
+          density -1
+          mass 0.028
+        }
+      }
+    }
+    Pose {
+      translation 0 0 0.038
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "textures/TeamBlue.png"
+              ]
+            }
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 0.08 0.001
+          }
+        }
+      ]
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -7.771629997904354e-09
+        axis 0 1 0
+        anchor -0.015 -0.045 -0.025
+      }
+      device [
+        RotationalMotor {
+          name "left wheel motor"
+        }
+        PositionSensor {
+          name "left wheel sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.01499999996114185 -0.045 -0.025
+        rotation -3.394147538555702e-10 -3.3941697539792353e-10 1 1.5707999999999982
+        children [
+          Pose {
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+            children [
+              DEF WHEEL_SHAPE Shape {
+                appearance PBRAppearance {
+                  roughness 1
+                  metalness 0
+                }
+                geometry Cylinder {
+                  height 0.01
+                  radius 0.02
+                }
+              }
+            ]
+          }
+        ]
+        name "right wheel"
+        boundingObject Pose {
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          children [
+            USE WHEEL_SHAPE
+          ]
+        }
+        physics DEF WHEEL_PHYSICS Physics {
+          density -1
+          mass 0.005
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -7.74663356251063e-09
+        axis 0 1 0
+        anchor -0.015 0.045 -0.025
+      }
+      device [
+        RotationalMotor {
+          name "right wheel motor"
+        }
+        PositionSensor {
+          name "right wheel sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.014999999961266832 0.045 -0.025
+        rotation -1.2706533741022546e-10 -1.2706160161538284e-10 1 1.5707996938995714
+        children [
+          Pose {
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  roughness 1
+                  metalness 0
+                }
+                geometry Cylinder {
+                  height 0.01
+                  radius 0.02
+                }
+              }
+            ]
+          }
+        ]
+        name "left wheel"
+        boundingObject Pose {
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          children [
+            Shape {
+              appearance PBRAppearance {
+                roughness 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.01
+                radius 0.02
+              }
+            }
+          ]
+        }
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF BLUE_ROBOT_SHAPE Shape {
+      appearance PBRAppearance {
+        baseColor 0.00392157 0 0.501961
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.1 0.08 0.075
+      }
+    }
+    Receiver {
+      name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
+    }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
+    }
+  ]
+  name "B1"
+  boundingObject USE BLUE_ROBOT_SHAPE
+  physics DEF ROBOT_PHYSICS Physics {
+    density -1
+    mass 0.2
+  }
+  controller "blue_robot"
+  synchronization FALSE
+}
+Robot {
+  children [
+    Display {
+    }
+    Camera {
+      translation 0 0 1.2
+      rotation 0 1 0 1.57
+      fieldOfView 1.54
+      width 640
+      height 640
+    }
+    Emitter {
+      channel 1
+      allowedChannels [
+        1
+      ]
+    }
+  ]
+  name "supervisor"
+  controller "referee_supervisor"
+  supervisor TRUE
+}
