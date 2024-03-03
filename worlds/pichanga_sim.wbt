@@ -388,13 +388,6 @@ DEF A Robot {
       }
     }
     Receiver {
-      name "supervisor receiver"
-      channel 1
-      allowedChannels [
-        1
-      ]
-    }
-    Receiver {
       name "ball receiver"
       type "infra-red"
       channel 4
@@ -577,13 +570,6 @@ DEF B Robot {
       }
     }
     Receiver {
-      name "supervisor receiver"
-      channel 1
-      allowedChannels [
-        1
-      ]
-    }
-    Receiver {
       name "ball receiver"
       type "infra-red"
       channel 4
@@ -598,7 +584,7 @@ DEF B Robot {
     density -1
     mass 0.2
   }
-  controller "blue_robot"
+  controller "purple_robot"
   synchronization FALSE
 }
 Robot {

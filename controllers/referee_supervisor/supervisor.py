@@ -1,5 +1,6 @@
 from controller import Supervisor
 from consts import TIMESTEP, TEAM_A_STARTING_POSITION, BALL_STARTING_POSITION
+import numpy as np
 
 class SoccerSupervisor(Supervisor):
     """SoccerSupervisor is in charge of simulation related tasks. Logic can be found in referee."""
@@ -24,14 +25,16 @@ class SoccerSupervisor(Supervisor):
 
     def send_camera_frame(self):
         img_data = self.camera.getImage()
-        self.emitter.send(img_data)
+        img = np.frombuffer(img_data, dtype=np.uint8)
+        img = np.reshape(img, (640, 640, 4))
+        img = img[:, :, :3]
 
-        # width = self.camera.getWidth()
-        # height = self.camera.getHeight()
-        # img = np.frombuffer(img_data, dtype=np.uint8)
-        # img = np.reshape(img, (640, 640, 4))
-        # cv2.imshow('Image from Supervisor', img)
-        # cv2.waitKey(1)
+        with open('raw_files/camera_a.raw', 'wb') as f:
+            f.write(img.tobytes())
+
+        with open('raw_files/camera_b.raw', 'wb') as f:
+            f.write(img.tobytes())
+        
 
     def refresh_translations(self):
         self.ball_translation = self.ball_translation_field.getSFVec3f()
