@@ -1,5 +1,6 @@
 from controller import Supervisor
-from consts import TIMESTEP, TEAM_A_STARTING_POSITION, BALL_STARTING_POSITION
+from consts import (TIMESTEP, TEAM_A_STARTING_POSITION, TEAM_B_STARTING_POSITION, 
+                    BALL_STARTING_POSITION)
 import numpy as np
 
 class SoccerSupervisor(Supervisor):
@@ -20,6 +21,9 @@ class SoccerSupervisor(Supervisor):
         self.a_robot = self.getFromDef("A")
         self.a_robot_translation_field = self.a_robot.getField("translation")
 
+        self.b_robot = self.getFromDef("B")
+        self.b_robot_translation_field = self.b_robot.getField("translation")
+
         self.draw_score(0, 0)
 
 
@@ -28,12 +32,13 @@ class SoccerSupervisor(Supervisor):
         img = np.frombuffer(img_data, dtype=np.uint8)
         img = np.reshape(img, (640, 640, 4))
         img = img[:, :, :3]
+        img_bytes = img.tobytes()
 
         with open('raw_files/camera_a.raw', 'wb') as f:
-            f.write(img.tobytes())
+            f.write(img_bytes)
 
         with open('raw_files/camera_b.raw', 'wb') as f:
-            f.write(img.tobytes())
+            f.write(img_bytes)
         
 
     def refresh_translations(self):
@@ -78,6 +83,10 @@ class SoccerSupervisor(Supervisor):
     def move_robots_to_start(self):
         
         self.a_robot_translation_field.setSFVec3f(TEAM_A_STARTING_POSITION)
+        self.a_robot.resetPhysics()
+
+        self.b_robot_translation_field.setSFVec3f(TEAM_B_STARTING_POSITION)
+        self.b_robot.resetPhysics()
         
         self.ball_translation_field.setSFVec3f(BALL_STARTING_POSITION)
         self.ball.setVelocity([0, 0, 0, 0, 0, 0])

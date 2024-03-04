@@ -11,4 +11,5 @@ TEAM_A_GOAL_X_RANGE = (-0.21, 0.21) # sim meters
 
 # Team starting positions after a goal
 TEAM_A_STARTING_POSITION = [0.0, 0.9, 0.045]
+TEAM_B_STARTING_POSITION = [0.0, -0.9, 0.045]
 BALL_STARTING_POSITION = [0, 0.0, 0.0208]
