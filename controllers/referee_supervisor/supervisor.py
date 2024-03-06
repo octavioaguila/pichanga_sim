@@ -1,6 +1,6 @@
 from controller import Supervisor
 from consts import (TIMESTEP, TEAM_A_STARTING_POSITION, TEAM_B_STARTING_POSITION, 
-                    BALL_STARTING_POSITION)
+                    BALL_STARTING_POSITION, CAMERA_WIDTH, CAMERA_HEIGHT)
 import numpy as np
 
 class SoccerSupervisor(Supervisor):
@@ -30,7 +30,7 @@ class SoccerSupervisor(Supervisor):
     def send_camera_frame(self):
         img_data = self.camera.getImage()
         img = np.frombuffer(img_data, dtype=np.uint8)
-        img = np.reshape(img, (640, 640, 4))
+        img = np.reshape(img, (CAMERA_HEIGHT, CAMERA_WIDTH, 4))
         img = img[:, :, :3]
         img_bytes = img.tobytes()
 
@@ -72,7 +72,7 @@ class SoccerSupervisor(Supervisor):
         self.setLabel(
             3, # ID
             "GOLAZO",
-            0.3,  # X position
+            0.4,  # X position
             0.4,  # Y position
             0.3,  # Size
             0x000000,  # Color
