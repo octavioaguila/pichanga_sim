@@ -11,8 +11,8 @@ WorldInfo {
   optimalThreadCount 8
 }
 Viewpoint {
-  orientation 0.019824463185666594 0.9803383149320107 0.1963256960656609 0.5243947568579007
-  position -4.007023183963305 -0.5564630691110103 2.2605221881588626
+  orientation -0.013516517695185797 0.9997742190862663 0.016395566469082745 0.8262322422748571
+  position -1.4356754066767554 0.45429436008314766 1.403686220611954
 }
 TexturedBackground {
 }
@@ -184,7 +184,7 @@ DEF SOCCER_FIELD Solid {
   locked TRUE
 }
 DEF BALL Robot {
-  translation 0 0 0.0208079
+  translation -0.2 0 0.0208079
   rotation 0.7071067811865474 0.7071067811865475 0 -2.62318
   children [
     DEF FOOTBALL_SHAPE Shape {
@@ -227,6 +227,52 @@ DEF A Robot {
   translation 0 0.9 0.045
   rotation 0 0 -0.9999999999988647 1.5708
   children [
+    DEF A_ROBOT_BODY Solid {
+      children [
+        DEF A_ROBOT_BODY_GROUP Group {
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.466667 0.462745 0.482353
+                roughness 1
+                metalness 0
+              }
+              geometry Box {
+                size 0.1 0.08 0.075
+              }
+            }
+            Pose {
+              translation 0.065 0.042 -0.02
+              rotation 0 0 1 -1.3
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0.141176 0.121569 0.192157
+                  }
+                  geometry Box {
+                    size 0.005 0.04 0.03
+                  }
+                }
+              ]
+            }
+            Pose {
+              translation 0.065 -0.042 -0.02
+              rotation 0 0 1 1.3
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0.141176 0.121569 0.192157
+                  }
+                  geometry Box {
+                    size 0.005 0.04 0.03
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
     BallJoint {
       jointParameters BallJointParameters {
         anchor 0.04 0 -0.041
@@ -237,8 +283,8 @@ DEF A Robot {
         axis 0 1 0
       }
       endPoint Solid {
-        translation 0.04 -3.043260000005361e-06 -0.041
-        rotation 0.0012811615722898568 -0.9999220519727645 0.012419686131375583 6.283185307179586
+        translation 0.04 -3.043260000005924e-06 -0.040999999999999995
+        rotation -0.7292438803291519 0.6752034868553416 -0.11092165857428475 6.283185307179586
         children [
           DEF BALL_WHEEL Shape {
             appearance PBRAppearance {
@@ -250,7 +296,7 @@ DEF A Robot {
             }
           }
         ]
-        name "solid(1)"
+        name "Ball"
         contactMaterial "wheel"
         boundingObject USE BALL_WHEEL
         physics Physics {
@@ -259,7 +305,7 @@ DEF A Robot {
         }
       }
     }
-    Pose {
+    DEF ROOF Pose {
       translation 0 0 0.038
       children [
         Shape {
@@ -292,8 +338,8 @@ DEF A Robot {
         }
       ]
       endPoint Solid {
-        translation -0.01499999996114185 -0.045 -0.025
-        rotation -3.3941458054298395e-10 -3.394165576008274e-10 1 1.5707999999999966
+        translation -0.014999999961141848 -0.045 -0.025
+        rotation -3.394145216646228e-10 -3.39416655731429e-10 1 1.5707999999999953
         children [
           Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
@@ -339,8 +385,8 @@ DEF A Robot {
         }
       ]
       endPoint Solid {
-        translation -0.014999999961266828 0.045 -0.025
-        rotation -1.270655248420162e-10 -1.2706206054882025e-10 1 1.5707996938995676
+        translation -0.014999999961266825 0.045 -0.025
+        rotation -1.2706550521589524e-10 -1.270619624182062e-10 1 1.570799693899568
         children [
           Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
@@ -377,27 +423,9 @@ DEF A Robot {
         physics USE WHEEL_PHYSICS
       }
     }
-    DEF BLUE_ROBOT_SHAPE Shape {
-      appearance PBRAppearance {
-        baseColor 0.00392157 0 0.501961
-        roughness 1
-        metalness 0
-      }
-      geometry Box {
-        size 0.1 0.08 0.075
-      }
-    }
-    Receiver {
-      name "ball receiver"
-      type "infra-red"
-      channel 4
-      allowedChannels [
-        4
-      ]
-    }
   ]
   name "A Robot"
-  boundingObject USE BLUE_ROBOT_SHAPE
+  boundingObject USE A_ROBOT_BODY_GROUP
   physics DEF ROBOT_PHYSICS Physics {
     density -1
     mass 0.2
@@ -419,8 +447,8 @@ DEF B Robot {
         axis 0 1 0
       }
       endPoint Solid {
-        translation 0.04 -3.0432600000050266e-06 -0.041
-        rotation -0.987621609655784 0.15685515731558555 -0.000125556446365575 6.283185307179586
+        translation 0.04 -3.043260000007584e-06 -0.041
+        rotation -0.9706705053879372 0.19233099797160363 -0.1442482484787027 6.283185307179586
         children [
           DEF BALL_WHEEL Shape {
             appearance PBRAppearance {
@@ -474,8 +502,8 @@ DEF B Robot {
         }
       ]
       endPoint Solid {
-        translation -0.01499999996114185 -0.045 -0.025
-        rotation -3.394151300743373e-10 -3.394167931142605e-10 1 1.5707999999999982
+        translation -0.014999999961141848 -0.045 -0.025
+        rotation -3.394151497004564e-10 -3.3941669498366144e-10 1 1.5707999999999982
         children [
           Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
@@ -521,8 +549,8 @@ DEF B Robot {
         }
       ]
       endPoint Solid {
-        translation -0.014999999961266832 0.045 -0.025
-        rotation -1.2706544633753167e-10 -1.270611184949244e-10 1 1.5707996938995707
+        translation -0.01499999996126683 0.045 -0.025
+        rotation -1.2706546596365383e-10 -1.2706103999043544e-10 1 1.5707996938995703
         children [
           Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
@@ -569,14 +597,6 @@ DEF B Robot {
         size 0.1 0.08 0.075
       }
     }
-    Receiver {
-      name "ball receiver"
-      type "infra-red"
-      channel 4
-      allowedChannels [
-        4
-      ]
-    }
   ]
   name "B Robot"
   boundingObject USE PURPLE_ROBOT_SHAPE
@@ -584,25 +604,17 @@ DEF B Robot {
     density -1
     mass 0.2
   }
-  controller "purple_robot"
+  controller "<none>"
   synchronization FALSE
 }
 Robot {
   children [
-    Display {
-    }
     Camera {
       translation 0 0 1.2
       rotation 0 1 0 1.57
       fieldOfView 1.54
       width 1280
       height 720
-    }
-    Emitter {
-      channel 1
-      allowedChannels [
-        1
-      ]
     }
   ]
   name "supervisor"

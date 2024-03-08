@@ -12,8 +12,6 @@ class SoccerSupervisor(Supervisor):
         self.camera = self.getDevice("camera")
         self.camera.enable(TIMESTEP)
 
-        self.emitter = self.getDevice("emitter")
-
         self.ball = self.getFromDef("BALL")
         self.ball_translation_field = self.ball.getField("translation")
         self.ball_translation = self.ball_translation_field.getSFVec3f()

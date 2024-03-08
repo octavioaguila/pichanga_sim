@@ -3,16 +3,30 @@ import numpy as np
 import cv2
 from PIL import Image
 import math
+from simple_pid import PID
 
 TIMESTEP = 16
 robot = Robot()
 
+linear_vel = 5
+wheel_radius = 0.02
+
 left_motor = robot.getDevice('left wheel motor')
 right_motor = robot.getDevice('right wheel motor')
+
+
+
 left_motor.setPosition(float('inf'))
-left_motor.setVelocity(0.5)
+left_motor.setVelocity(linear_vel)
 right_motor.setPosition(float('inf'))
-right_motor.setVelocity(0.5)
+right_motor.setVelocity(linear_vel)
+
+heading_controller = PID(1, 0.0, 0.0, setpoint=0)
+linear_velocity_controller = PID(0.02, 0.0, 0.0, setpoint=0)
+
+linear_velocity_controller.output_limits = (0, 5)
+# heading_controller.output_limits = (-5, 5)
+
 
 while robot.step(TIMESTEP) != -1:
 
@@ -66,18 +80,49 @@ while robot.step(TIMESTEP) != -1:
     if bbox_detected[0][1] is not None and bbox_detected[1][1] is not None:
         x1_yellow, y1_yellow, x2_yellow, y2_yellow = bbox_detected[0][1]
         x1_blue, y1_blue, x2_blue, y2_blue = bbox_detected[1][1]
+        x1_red, y1_red, x2_red, y2_red = bbox_detected[2][1]
 
-        yellow_center_x = (x1_yellow + x2_yellow) / 2
-        blue_center_x = (x1_blue + x2_blue) / 2
+        yellow_center_x, yellow_center_y = ((x1_yellow + x2_yellow) / 2, (y1_yellow + y2_yellow) / 2)
+        blue_center_x, blue_center_y = ((x1_blue + x2_blue) / 2, (y1_blue + y2_blue) / 2)
+        red_center_x, red_center_y = ((x1_red + x2_red) / 2, (y1_red + y2_red) / 2)
 
-        yellow_center_y = (y1_yellow + y2_yellow) / 2
-        blue_center_y = (y1_blue + y2_blue) / 2
+        robot_center_x, robot_center_y = ((blue_center_x + red_center_x) / 2, (blue_center_y + red_center_y) / 2)
 
-        linear_distance = ((yellow_center_x - blue_center_x) ** 2 + (yellow_center_y - blue_center_y) ** 2) ** 0.5
-        angle = math.atan2(yellow_center_y - blue_center_y, yellow_center_x - blue_center_x) * 180 / math.pi
+        linear_distance_error = -((yellow_center_x - blue_center_x) ** 2 + (yellow_center_y - blue_center_y) ** 2) ** 0.5
+        inertial_frame_angle_to_ball = math.atan2(yellow_center_y - robot_center_y, yellow_center_x - robot_center_x)
+        #inertial_frame_angle_to_ball = np.degrees(inertial_frame_angle_to_ball)
+
+        heading_vector = np.array([blue_center_x - red_center_x, blue_center_y - red_center_y])
+        inertial_frame_vector = np.array([1, 0])
+
+        robot_frame_angle_to_ball = np.dot(heading_vector, inertial_frame_vector) / (np.linalg.norm(heading_vector) * np.linalg.norm(inertial_frame_vector))
+        robot_frame_angle_to_ball = np.arccos(robot_frame_angle_to_ball)
+        #robot_frame_angle_to_ball = np.degrees(robot_frame_angle_to_ball)
+
+
         cv2.line(img_masked, (int(yellow_center_x), int(yellow_center_y)), (int(blue_center_x), int(blue_center_y)), (0, 255, 0), 2)
-        cv2.putText(img_masked, f"Linear Distance: {linear_distance}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
-        cv2.putText(img_masked, f"Angle: {angle}", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(img_masked, f"Linear Distance Error: {linear_distance_error}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(img_masked, f"Robot Angle: {robot_frame_angle_to_ball}", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(img_masked, f"Inertial Angle: {inertial_frame_angle_to_ball}", (10, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+
+        if inertial_frame_angle_to_ball < 0:
+            angle_error = inertial_frame_angle_to_ball + robot_frame_angle_to_ball
+        else:
+            angle_error = inertial_frame_angle_to_ball - robot_frame_angle_to_ball
+
+        print(f"Angle Error: {angle_error}")
+
+        heading_control_effort = heading_controller(angle_error)
+        linear_control_effort = linear_velocity_controller(linear_distance_error)
+
+        left_motor_ang_velocity = linear_control_effort + heading_control_effort
+        right_motor_ang_velocity = linear_control_effort - heading_control_effort
+
+        left_motor.setVelocity(left_motor_ang_velocity)
+        right_motor.setVelocity(right_motor_ang_velocity)
+        # left_motor.setVelocity(0)
+        # right_motor.setVelocity(0)
+
 
     cv2.imshow('Blue Robot', img_masked)
     cv2.waitKey(1)
